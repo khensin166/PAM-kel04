@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\ik\IzinKeluarController;
 use App\Http\Controllers\Mahasiswa\AuthenticationController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,9 +17,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/ik/store', [IzinKeluarController::class, 'store'])->middleware(['auth:sanctum', 'abilities:mahasiswa']);
+Route::get('/ik', [IzinKeluarController::class, 'index'])->middleware(['auth:sanctum', 'abilities:mahasiswa']);
 
 Route::get('/test', function () {
     return  response([
@@ -27,3 +28,4 @@ Route::get('/test', function () {
 
 Route::post('register', [AuthenticationController::class, 'register']);
 Route::post('login', [AuthenticationController::class, 'login']);
+// Route::post('/ik/store', [IzinKeluarController::class, 'store']);

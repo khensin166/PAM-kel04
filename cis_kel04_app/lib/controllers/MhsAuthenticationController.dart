@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cis_kel04_app/constants/constants.dart';
 import 'package:cis_kel04_app/views/mahasiswa/pages/dashboard.dart';
+import 'package:cis_kel04_app/views/mahasiswa/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -40,9 +41,9 @@ class MhsAuthenticationController extends GetxController {
       if (response.statusCode == 201) {
         isLoading.value = false;
 
-        token.value = json.decode(response.body)["token"];
-        box.write('token', token.value);
-        Get.offAll(() => const MhsDashboard());
+        // token.value = json.decode(response.body)["token"];
+        // box.write('token', token.value);
+        Get.offAll(() => const MhsLogin());
       } else {
         isLoading.value = false;
         Get.snackbar(
@@ -59,7 +60,6 @@ class MhsAuthenticationController extends GetxController {
       print(e.toString());
     }
   }
-
 
   Future login({
     required String email,
@@ -84,7 +84,6 @@ class MhsAuthenticationController extends GetxController {
         token.value = json.decode(response.body)["token"];
         box.write('token', token.value);
         Get.offAll(() => const MhsDashboard());
-        // print(json.decode(response.body));
       } else {
         isLoading.value = false;
         Get.snackbar(
@@ -100,5 +99,10 @@ class MhsAuthenticationController extends GetxController {
       isLoading.value = false;
       print(e.toString());
     }
+  }
+
+  void logout() {
+    box.remove('token');
+    Get.offAll(() => const MhsLogin());
   }
 }

@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'mahasiswa',
         'passwords' => 'users',
     ],
 
@@ -39,6 +39,11 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+        ],
+
+        'mahasiswa' => [  // Add this block for the new guard
+            'driver' => 'sanctum',
+            'provider' => 'mahasiswa', // The provider for mahasiswa
         ],
     ],
 
@@ -65,6 +70,10 @@ return [
             'model' => App\Models\User::class,
         ],
 
+        'mahasiswa' => [  // Add this block for the new provider
+            'driver' => 'eloquent',
+            'model' => App\Models\Mahasiswa::class, // Adjust the model for Mahasiswa
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

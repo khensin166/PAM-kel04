@@ -5,13 +5,15 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Http\Middleware\Authenticate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 
 class Mahasiswa extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    protected $guard = 'mahasiswa';
 
     /**
      * The attributes that are mass assignable.
@@ -46,4 +48,9 @@ class Mahasiswa extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function ik(): HasMany
+    {
+        return $this->hasMany(IzinKeluar::class);
+    }
 }

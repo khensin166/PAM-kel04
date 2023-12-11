@@ -78,7 +78,7 @@ class _MhsLoginState extends State<MhsLogin> {
               children: [
                 input_widget(
                   controller: _emailController,
-                  hintText: "Masukkan username",
+                  hintText: "Masukkan email",
                   obscureText: false,
                   size: size,
                   icon: Icon(
@@ -148,7 +148,7 @@ class _MhsLoginState extends State<MhsLogin> {
                                   color: Colors.white),
                             )
                           : Text(
-                              "Sign up",
+                              "Sign in",
                               style: GoogleFonts.inter(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w600,

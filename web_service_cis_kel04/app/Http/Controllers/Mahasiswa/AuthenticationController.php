@@ -37,18 +37,18 @@ class AuthenticationController extends Controller
     {
         $request->validated();
 
-        $user = Mahasiswa::whereUsername($request->username)->first();
-        // dd($user);
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        $mahasiswa = Mahasiswa::whereEmail($request->email)->first();
+        
+        if (!$mahasiswa || !Hash::check($request->password, $mahasiswa->password)) {
             return response([
                 'message' => 'invalid credentials'
             ], 422);
         }
 
-        $token = $user->createToken('forumapp')->plainTextToken;
+        $token = $mahasiswa->createToken('cis')->plainTextToken;
 
         return response([
-            'user' => $user,
+            'mahasiswa' => $mahasiswa,
             'token' => $token,
         ], 200);
     }
