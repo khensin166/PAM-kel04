@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Baak\AuthenticationController as BaakAuthenticationController;
 use App\Http\Controllers\ik\IzinKeluarController;
 use App\Http\Controllers\Mahasiswa\AuthenticationController;
 use Illuminate\Http\Request;
@@ -29,3 +30,7 @@ Route::get('/test', function () {
 Route::post('register', [AuthenticationController::class, 'register']);
 Route::post('login', [AuthenticationController::class, 'login']);
 // Route::post('/ik/store', [IzinKeluarController::class, 'store']);
+
+Route::prefix('baak')->group(function () {
+    Route::post('/login', [BaakAuthenticationController::class, 'login']);
+});

@@ -27,8 +27,7 @@ class IzinKeluarController extends Controller
 
         $mahasiswa = Auth::guard('mahasiswa')->user();
 
-        if ($mahasiswa) {
-
+        if ($mahasiswa){
             $mahasiswa->ik()->create([
                 'mahasiswa_id' => $mahasiswa->id,
                 'berangkat' => $request->berangkat,

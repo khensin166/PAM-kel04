@@ -45,6 +45,11 @@ return [
             'driver' => 'sanctum',
             'provider' => 'mahasiswa', // The provider for mahasiswa
         ],
+
+        'baak' => [  // Add this block for the new guard
+            'driver' => 'sanctum',
+            'provider' => 'baak', // The provider for mahasiswa
+        ],
     ],
 
     /*
@@ -74,6 +79,12 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Mahasiswa::class, // Adjust the model for Mahasiswa
         ],
+
+        'baak' => [  // Add this block for the new provider
+            'driver' => 'eloquent',
+            'model' => App\Models\Baak::class, // Adjust the model for Mahasiswa
+        ],
+        
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
