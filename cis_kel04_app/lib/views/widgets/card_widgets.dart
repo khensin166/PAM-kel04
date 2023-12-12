@@ -5,12 +5,13 @@ class card_widgets extends StatelessWidget {
     super.key,
     required this.hintCard,
     required this.image,
-    required this.onPressed,
+    required this.onPressed, required this.color,
   });
 
   final String hintCard;
   final String image;
   final VoidCallback onPressed;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class card_widgets extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-            color: Color(0xffE9FFEB),
+            color: color,
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cis_kel04_app/constants/constants.dart';
+import 'package:cis_kel04_app/models/mahasiswa.dart';
 import 'package:cis_kel04_app/views/mahasiswa/pages/dashboard.dart';
 import 'package:cis_kel04_app/views/mahasiswa/pages/login.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,11 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 class MhsAuthenticationController extends GetxController {
+  void onInit() {
+    getMahasiswaData();
+    super.onInit();
+  }
+
   final isLoading = false.obs;
   final token = ''.obs;
   final box = GetStorage();
@@ -104,5 +110,34 @@ class MhsAuthenticationController extends GetxController {
   void logout() {
     box.remove('token');
     Get.offAll(() => const MhsLogin());
+  }
+
+  Future<MahasiswaModel?> getMahasiswaData() async {
+    try {
+      String storedToken = box.read('token') ?? '';
+      if (storedToken.isEmpty) {
+        // Token is not available, return null or handle as appropriate
+        return null;
+      }
+
+      var response = await http.get(
+        Uri.parse('${url}get_mahasiswa_data'),
+        headers: {'Authorization': 'Bearer $storedToken'},
+      );
+
+      if (response.statusCode == 200) {
+        var mahasiswaData =
+            MahasiswaModel.fromJson(json.decode(response.body)['mahasiswa']);
+        return mahasiswaData;
+      } else {
+        // Handle error or return null
+        print(json.decode(response.body));
+        return null;
+      }
+    } catch (e) {
+      // Handle error or return null
+      print(e.toString());
+      return null;
+    }
   }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Baak\AuthenticationController as BaakAuthenticationController;
+use App\Http\Controllers\IB\IzinBermalamController;
 use App\Http\Controllers\ik\IzinKeluarController;
 use App\Http\Controllers\Mahasiswa\AuthenticationController;
 use Illuminate\Http\Request;
@@ -18,8 +19,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/ik/store', [IzinKeluarController::class, 'store'])->middleware(['auth:sanctum', 'abilities:mahasiswa']);
-Route::get('/ik', [IzinKeluarController::class, 'index'])->middleware(['auth:sanctum', 'abilities:mahasiswa']);
 
 Route::get('/test', function () {
     return  response([
@@ -34,3 +33,11 @@ Route::post('login', [AuthenticationController::class, 'login']);
 Route::prefix('baak')->group(function () {
     Route::post('/login', [BaakAuthenticationController::class, 'login']);
 });
+
+Route::put('/ik/{id}/status-update', [IzinKeluarController::class, 'statusUpdate']);
+Route::post('/ib/store', [IzinBermalamController::class, 'store'])->middleware(['auth:sanctum', 'abilities:mahasiswa']);
+
+// Request ik mahasiswa
+Route::post('/ik/store', [IzinKeluarController::class, 'store'])->middleware(['auth:sanctum', 'abilities:mahasiswa']);
+Route::get('/ik', [IzinKeluarController::class, 'index'])->middleware(['auth:sanctum', 'abilities:mahasiswa']);
+

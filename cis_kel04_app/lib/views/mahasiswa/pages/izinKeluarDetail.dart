@@ -1,81 +1,142 @@
+import 'package:cis_kel04_app/constants/constants.dart';
 import 'package:cis_kel04_app/controllers/ik_Controller.dart';
-import 'package:cis_kel04_app/views/widgets/input_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class IzinKeluarDetail extends StatefulWidget {
-  const IzinKeluarDetail({super.key});
+  const IzinKeluarDetail({Key? key}) : super(key: key);
 
   @override
   State<IzinKeluarDetail> createState() => _IzinKeluarDetailState();
 }
 
 class _IzinKeluarDetailState extends State<IzinKeluarDetail> {
-  DateTime dateTime = DateTime(2022, 12, 24, 5, 30);
-  final TextEditingController _berangkatController = TextEditingController();
-  final TextEditingController _kembaliController = TextEditingController();
+  DateTime berangkatDateTime = DateTime(2022, 12, 24, 5, 30);
+  DateTime kembaliDateTime = DateTime(2022, 12, 24, 5, 30);
+
   final TextEditingController _keteranganController = TextEditingController();
   final IKController _ikController = Get.put(IKController());
 
   @override
   Widget build(BuildContext context) {
-    final hours = dateTime.hour.toString().padLeft(2, '0');
-    final minutes = dateTime.minute.toString().padLeft(2, '0');
+    final berangkatHours = berangkatDateTime.hour.toString().padLeft(2, '0');
+    final berangkatMinutes =
+        berangkatDateTime.minute.toString().padLeft(2, '0');
+
+    final kembaliHours = kembaliDateTime.hour.toString().padLeft(2, '0');
+    final kembaliMinutes = kembaliDateTime.minute.toString().padLeft(2, '0');
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Form Izin Keluar'),
+        title: const Text('Form Izin Keluar'),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.all(30.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Form Pengisian ik'),
-            SizedBox(
+            const Text(
+              'Request Izin Keluar',
+              style: heading1,
+            ),
+            const SizedBox(
               height: 20,
             ),
+            _buildDateTimePicker(
+              label: 'Rencana Berangkat',
+              dateTime: berangkatDateTime,
+              onDateTimeChanged: (date) {
+                setState(() => berangkatDateTime = date);
+              },
+            ),
+            _buildDateTimePicker(
+              label: 'Rencana Kembali',
+              dateTime: kembaliDateTime,
+              onDateTimeChanged: (date) {
+                setState(() => kembaliDateTime = date);
+              },
+            ),
+            const Text(
+              'Keterangan',
+              style: heading2,
+            ),
+            TextField(
+              controller: _keteranganController,
+              maxLines: 20,
+              decoration: InputDecoration(
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+            ),
             ElevatedButton(
-                onPressed: () async {
-                  final date = await pickDate();
-                  if (date == null) return;
-                  setState(() => dateTime = date);
-                },
-                child:
-                    Text('${dateTime.year}/${dateTime.month}/${dateTime.day}')),
-            ElevatedButton(
-                onPressed: () async {
-                  final time = await pickTime();
-                  if (time == null) return;
-                  final newDateTime = DateTime(dateTime.year, dateTime.month,
-                      dateTime.day, time.hour, time.minute);
-
-                  setState(() => dateTime = newDateTime);
-                },
-                child: Text('$hours:$minutes')),
+              onPressed: () async {
+                if (_keteranganController.text.isNotEmpty) {
+                  await _ikController.createDataIK(
+                    keterangan: _keteranganController.text,
+                    berangkat: berangkatDateTime,
+                    kembali: kembaliDateTime,
+                  );
+                }
+              },
+              child: Text('Kirim'),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Future pickDateTime() async {
-    DateTime? date = await pickDate();
-    if (date == null) return;
+  Widget _buildDateTimePicker({
+    required String label,
+    required DateTime dateTime,
+    required Function(DateTime) onDateTimeChanged,
+  }) {
+    final hours = dateTime.hour.toString().padLeft(2, '0');
+    final minutes = dateTime.minute.toString().padLeft(2, '0');
 
-    TimeOfDay? time = await pickTime();
-    if (time == null) return;
-
-    final dateTime =
-        DateTime(date.year, date.month, date.day, time.hour, time.minute);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          label,
+          style: heading2,
+          textAlign: TextAlign.left,
+        ),
+        const SizedBox(width: 10),
+        ElevatedButton(
+          onPressed: () async {
+            final date = await pickDateTime(dateTime);
+            if (date == null) return;
+            onDateTimeChanged(date);
+          },
+          child: Text(
+              '${dateTime.year}/${dateTime.month}/${dateTime.day} $hours:$minutes'),
+        ),
+      ],
+    );
   }
 
-  Future<DateTime?> pickDate() => showDatePicker(
-      context: context,
-      initialDate: dateTime,
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2100));
+  Future<DateTime?> pickDateTime(DateTime initialDateTime) async {
+    DateTime? date = await pickDate(initialDateTime);
+    if (date == null) return null;
 
-  Future<TimeOfDay?> pickTime() => showTimePicker(
-      context: context,
-      initialTime: TimeOfDay(hour: dateTime.hour, minute: dateTime.minute));
+    TimeOfDay? time = await pickTime(initialDateTime);
+    if (time == null) return null;
+
+    return DateTime(date.year, date.month, date.day, time.hour, time.minute);
+  }
+
+  Future<DateTime?> pickDate(DateTime initialDate) => showDatePicker(
+        context: context,
+        initialDate: initialDate,
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2100),
+      );
+
+  Future<TimeOfDay?> pickTime(DateTime initialTime) => showTimePicker(
+        context: context,
+        initialTime:
+            TimeOfDay(hour: initialTime.hour, minute: initialTime.minute),
+      );
 }

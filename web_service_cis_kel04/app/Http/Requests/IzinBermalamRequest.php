@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class IKRequest extends FormRequest
+class IzinBermalamRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,10 @@ class IKRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'keterangan' => 'required|string|min:6',
-            'berangkat' => 'required',
-            'kembali' => 'required|after:berangkat',
-            'status' => 'nullable|in:approved,pending,rejected',
+            'rencana_berangkat' => 'required',
+            'rencana_kembali' => 'required',
+            'tujuan' => 'required',
+            'keterangan' => 'required',
         ];
     }
 }

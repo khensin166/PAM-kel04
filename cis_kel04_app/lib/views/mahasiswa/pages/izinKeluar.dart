@@ -63,10 +63,10 @@ class _IzinKeluarState extends State<IzinKeluar> {
                                   height: 1.5),
                               textAlign: TextAlign.center,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 8,
                             ),
-                            Icon(
+                            const Icon(
                               Icons.add,
                               color: Colors.white,
                             )
@@ -76,47 +76,55 @@ class _IzinKeluarState extends State<IzinKeluar> {
                   const SizedBox(
                     height: 20,
                   ),
-                  SingleChildScrollView(
-                    child: Obx(() {
-                      return _ikController.isLoading.value
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : DataTable(
-                              columns: <DataColumn>[
-                                DataColumn(
-                                  label: Text('No', style: titles),
-                                  numeric: true,
-                                ),
-                                DataColumn(
-                                  label: Text('Keterangan', style: titles),
-                                ),
-                                DataColumn(
-                                  label: Text('Status', style: titles),
-                                ),
-                              ],
-                              rows:
-                                  _ikController.data_ik.value.map((izinKeluar) {
-                                Color cellColor;
-                                if (izinKeluar.status == 'pending') {
-                                  cellColor = Colors.yellow.shade100;
-                                } else if (izinKeluar.status == 'accept') {
-                                  cellColor = Colors.green.shade100;
-                                } else {
-                                  // Default color if status is neither 'pending' nor 'accept'
-                                  cellColor = Colors.grey;
-                                }
-                                return DataRow(
-                                    color: MaterialStateProperty.all(cellColor),
-                                    cells: [
-                                      DataCell(Text(izinKeluar.id.toString())),
-                                      DataCell(
-                                          Text(izinKeluar.keterangan ?? '')),
-                                      DataCell(Text(izinKeluar.status ?? '')),
-                                    ]);
-                              }).toList(),
-                            );
-                    }),
+                  Center(
+                    child: SingleChildScrollView(
+                      child: Obx(() {
+                        return _ikController.isLoading.value
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : DataTable(
+                                columns: <DataColumn>[
+                                  DataColumn(
+                                    label: Text('No', style: titles),
+                                    numeric: true,
+                                  ),
+                                  DataColumn(
+                                    label: Text('Keterangan', style: titles),
+                                  ),
+                                  DataColumn(
+                                    label: Text('Status', style: titles),
+                                  ),
+                                ],
+                                rows: _ikController.data_ik.value
+                                    .map((izinKeluar) {
+                                  int rowNumber = _ikController.data_ik.value
+                                          .indexOf(izinKeluar) +
+                                      1;
+                                  Color cellColor;
+                                  if (izinKeluar.status == 'pending') {
+                                    cellColor = Colors.yellow.shade100;
+                                  } else if (izinKeluar.status == 'approved') {
+                                    cellColor = Colors.green.shade50;
+                                  } else if (izinKeluar.status == 'rejected') {
+                                    cellColor = Colors.red.shade50;
+                                  } else {
+                                    // Default color if status is neither 'pending' nor 'accept'
+                                    cellColor = Colors.grey;
+                                  }
+                                  return DataRow(
+                                      color:
+                                          MaterialStateProperty.all(cellColor),
+                                      cells: [
+                                        DataCell(Text(rowNumber.toString())),
+                                        DataCell(
+                                            Text(izinKeluar.keterangan ?? '')),
+                                        DataCell(Text(izinKeluar.status ?? '')),
+                                      ]);
+                                }).toList(),
+                              );
+                      }),
+                    ),
                   )
                 ],
               ),
