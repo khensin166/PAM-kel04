@@ -1,6 +1,3 @@
-// To parse this JSON data, do
-//
-//     final izinKeluarModel = izinKeluarModelFromJson(jsonString);
 
 import 'dart:convert';
 

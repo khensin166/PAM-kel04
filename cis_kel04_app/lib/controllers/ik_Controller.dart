@@ -23,12 +23,14 @@ class IKController extends GetxController {
   Future getAllDataIK() async {
     try {
       isLoading.value = true;
-      var response = await http.get(Uri.parse('${url}ik'), headers: {
+      var response =
+          await http.get(Uri.parse('${url}mahasiswa/dataIKMhs'), headers: {
         'Accept': 'application/json',
         'Authorization': 'Bearer ${box.read('token')}',
       });
       if (response.statusCode == 200) {
         isLoading.value = false;
+
         for (var item in json.decode(response.body)['data_ik']) {
           data_ik.value.add(IzinKeluarModel.fromJson(item));
         }
@@ -55,7 +57,7 @@ class IKController extends GetxController {
         'keterangan': keterangan,
       };
 
-      var response = await http.post(Uri.parse('${url}ik/store'),
+      var response = await http.post(Uri.parse('${url}mahasiswa/ik/store'),
           headers: {
             'Accept': 'application/json',
             'Authorization': 'Bearer ${box.read('token')}',
@@ -68,7 +70,7 @@ class IKController extends GetxController {
             snackPosition: SnackPosition.TOP,
             backgroundColor: Colors.green,
             colorText: Colors.white);
-        Get.to(IzinKeluar());
+        Get.off(IzinKeluar());
       }
     } catch (e) {
       isLoading.value = false;

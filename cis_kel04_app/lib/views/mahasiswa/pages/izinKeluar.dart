@@ -14,6 +14,7 @@ class IzinKeluar extends StatefulWidget {
 
 class _IzinKeluarState extends State<IzinKeluar> {
   final IKController _ikController = Get.put(IKController());
+
   @override
   Widget build(BuildContext context) {
     TextStyle titles = const TextStyle(
@@ -80,7 +81,7 @@ class _IzinKeluarState extends State<IzinKeluar> {
                     child: SingleChildScrollView(
                       child: Obx(() {
                         return _ikController.isLoading.value
-                            ? Center(
+                            ? const Center(
                                 child: CircularProgressIndicator(),
                               )
                             : DataTable(

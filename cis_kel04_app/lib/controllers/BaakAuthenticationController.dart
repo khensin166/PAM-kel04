@@ -39,7 +39,7 @@ class BaakAuthenticationController extends GetxController {
 
         token.value = json.decode(response.body)["token"];
         box.write('token', token.value);
-        Get.offAll(() => const BaakDashboard());
+        Get.to((BaakDashboard()));
       } else {
         isLoading.value = false;
         Get.snackbar(

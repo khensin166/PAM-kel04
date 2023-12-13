@@ -32,7 +32,7 @@ class _BaakLoginState extends State<BaakLogin> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               buildCard(size),
-              buildFooter(size),
+              // buildFooter(size),
             ],
           ),
         ),

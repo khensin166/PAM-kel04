@@ -85,6 +85,7 @@ class _IzinKeluarDetailState extends State<IzinKeluarDetail> {
                     berangkat: berangkatDateTime,
                     kembali: kembaliDateTime,
                   );
+                  _ikController.getAllDataIK();
                 }
               },
               child: Text('Kirim'),

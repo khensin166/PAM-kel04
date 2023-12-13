@@ -39,7 +39,7 @@ class MhsAuthenticationController extends GetxController {
       };
 
       var response = await http.post(
-        Uri.parse('${url}register'),
+        Uri.parse('${url}mahasiswa/register'),
         headers: {'Accept': 'application/json'},
         body: data,
       );
@@ -47,8 +47,6 @@ class MhsAuthenticationController extends GetxController {
       if (response.statusCode == 201) {
         isLoading.value = false;
 
-        // token.value = json.decode(response.body)["token"];
-        // box.write('token', token.value);
         Get.offAll(() => const MhsLogin());
       } else {
         isLoading.value = false;
@@ -79,7 +77,7 @@ class MhsAuthenticationController extends GetxController {
       };
 
       var response = await http.post(
-        Uri.parse('${url}login'),
+        Uri.parse('${url}mahasiswa/login'),
         headers: {'Accept': 'application/json'},
         body: data,
       );
@@ -89,6 +87,12 @@ class MhsAuthenticationController extends GetxController {
 
         token.value = json.decode(response.body)["token"];
         box.write('token', token.value);
+
+        MahasiswaModel mahasiswa =
+            MahasiswaModel.fromJson(json.decode(response.body)["mahasiswa"]);
+
+        // Store Mahasiswa data in GetStorage
+        box.write('mahasiswa', mahasiswa.toJson());
         Get.offAll(() => const MhsDashboard());
       } else {
         isLoading.value = false;
