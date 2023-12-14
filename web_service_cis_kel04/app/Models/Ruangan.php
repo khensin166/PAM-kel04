@@ -5,22 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class IzinBermalam extends Model
+class Ruangan extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'mahasiswa_id',
-        'rencana_berangkat',
-        'rencana_kembali',
-        'keterangan',
+        'nama_ruangan',
         'status',
-        'tujuan',
     ];
 
-    public function Mahasiswa(): BelongsTo
+    public function ruangan(): HasMany
     {
+        return $this->hasMany(Ruangan::class);
+    }
+
+    public function mahasiswa(): BelongsTo {
         return $this->belongsTo(Mahasiswa::class);
     }
 }

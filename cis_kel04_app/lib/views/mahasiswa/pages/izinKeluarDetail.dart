@@ -27,70 +27,72 @@ class _IzinKeluarDetailState extends State<IzinKeluarDetail> {
       appBar: AppBar(
         title: const Text('Form Izin Keluar'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: Column(
-          children: [
-            const Text(
-              'Request Izin Keluar',
-              style: heading1,
-            ),
-            const SizedBox(height: 20),
-            _buildDateTimePicker(
-              label: 'Rencana Berangkat',
-              dateTime: berangkatDateTime,
-              onDateTimeChanged: (date) {
-                setState(() {
-                  berangkatDateTime = date;
-                  _berangkatController.text =
-                      '${date.year}/${date.month}/${date.day} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
-                });
-              },
-              controller: _berangkatController,
-            ),
-            _buildDateTimePicker(
-              label: 'Rencana Kembali',
-              dateTime: kembaliDateTime,
-              onDateTimeChanged: (date) {
-                setState(() {
-                  kembaliDateTime = date;
-                  _kembaliController.text =
-                      '${date.year}/${date.month}/${date.day} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
-                });
-              },
-              controller: _kembaliController,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Keterangan',
-              style: heading2,
-              textAlign: TextAlign.left,
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _keteranganController,
-              maxLines: 10,
-              decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: Column(
+            children: [
+              const Text(
+                'Request Izin Keluar',
+                style: heading1,
               ),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                if (_keteranganController.text.isNotEmpty) {
-                  await _ikController.createDataIK(
-                    keterangan: _keteranganController.text,
-                    berangkat: berangkatDateTime,
-                    kembali: kembaliDateTime,
-                  );
-                  _ikController.getAllDataIK();
-                }
-              },
-              child: Text('Kirim'),
-            ),
-          ],
+              const SizedBox(height: 20),
+              _buildDateTimePicker(
+                label: 'Rencana Berangkat',
+                dateTime: berangkatDateTime,
+                onDateTimeChanged: (date) {
+                  setState(() {
+                    berangkatDateTime = date;
+                    _berangkatController.text =
+                        '${date.year}/${date.month}/${date.day} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+                  });
+                },
+                controller: _berangkatController,
+              ),
+              _buildDateTimePicker(
+                label: 'Rencana Kembali',
+                dateTime: kembaliDateTime,
+                onDateTimeChanged: (date) {
+                  setState(() {
+                    kembaliDateTime = date;
+                    _kembaliController.text =
+                        '${date.year}/${date.month}/${date.day} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+                  });
+                },
+                controller: _kembaliController,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Keterangan',
+                style: heading2,
+                textAlign: TextAlign.left,
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: _keteranganController,
+                maxLines: 10,
+                decoration: InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  if (_keteranganController.text.isNotEmpty) {
+                    await _ikController.createDataIK(
+                      keterangan: _keteranganController.text,
+                      berangkat: berangkatDateTime,
+                      kembali: kembaliDateTime,
+                    );
+                    _ikController.getAllDataIK();
+                  }
+                },
+                child: Text('Kirim'),
+              ),
+            ],
+          ),
         ),
       ),
     );

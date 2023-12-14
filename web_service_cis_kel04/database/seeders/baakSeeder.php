@@ -27,15 +27,5 @@ class baakSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
-        DB::table('baaks')->insert([
-            'id' => 2,
-            'nama' => 'Nama Baak 2',
-            'email' => 'baak2@example.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('password456'),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
     }
 }

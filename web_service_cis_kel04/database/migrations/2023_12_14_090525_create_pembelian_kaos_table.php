@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('izin_bermalams', function (Blueprint $table) {
+        Schema::create('pembelian_kaos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('mahasiswa_id');
             $table->foreign('mahasiswa_id')->references('id')->on('mahasiswas');
-            $table->text('keterangan');
-            $table->text('tujuan');
-            $table->dateTime('rencana_berangkat');
-            $table->dateTime('rencana_kembali');
+            $table->string('price');
+            $table->string('size');
             $table->enum('status', ['approved', 'rejected', 'pending', 'cancel'])->default('pending');
             $table->timestamps();
         });
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('izin_bermalams');
+        Schema::dropIfExists('pembelian_kaos');
     }
 };

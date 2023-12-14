@@ -57,4 +57,14 @@ class Mahasiswa extends Authenticatable
     {
         return $this->hasMany(IzinBermalam::class);
     }
+
+    public function IzinRuangan(): HasMany
+    {
+        return $this->hasMany(IzinRuangan::class);
+    }
+
+    public function surat(): HasMany
+    {
+        return $this->hasMany(Surat::class);
+    }
 }

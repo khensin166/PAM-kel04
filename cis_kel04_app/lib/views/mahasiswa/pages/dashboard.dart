@@ -23,7 +23,7 @@ class _MhsDashboardState extends State<MhsDashboard> {
   @override
   void initState() {
     super.initState();
-    _mahasiswaFuture = _mhsAuthenticationController.getMahasiswaData();
+    _mahasiswaFuture = _mhsAuthenticationController.getDashboardData();
   }
 
   @override

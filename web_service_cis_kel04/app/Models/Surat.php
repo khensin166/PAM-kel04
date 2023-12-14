@@ -6,21 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class IzinBermalam extends Model
+class Surat extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'mahasiswa_id',
-        'rencana_berangkat',
-        'rencana_kembali',
+        'kategori_surat',
         'keterangan',
-        'status',
-        'tujuan',
+        'status'
     ];
 
-    public function Mahasiswa(): BelongsTo
-    {
+    public function mahasiswa(): BelongsTo {
         return $this->belongsTo(Mahasiswa::class);
     }
 }

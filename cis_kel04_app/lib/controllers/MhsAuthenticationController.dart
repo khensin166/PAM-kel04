@@ -144,4 +144,33 @@ class MhsAuthenticationController extends GetxController {
       return null;
     }
   }
+
+  Future<MahasiswaModel?> getDashboardData() async {
+    try {
+      String storedToken = box.read('token') ?? '';
+      if (storedToken.isEmpty) {
+        // Token is not available, return null or handle as appropriate
+        return null;
+      }
+
+      var response = await http.get(
+        Uri.parse('${url}dashboard'),
+        headers: {'Authorization': 'Bearer $storedToken'},
+      );
+
+      if (response.statusCode == 200) {
+        var mahasiswaData = MahasiswaModel.fromJson(
+            json.decode(response.body)['data_mahasiswa']);
+        return mahasiswaData;
+      } else {
+        // Handle error or return null
+        print(json.decode(response.body));
+        return null;
+      }
+    } catch (e) {
+      // Handle error or return null
+      print(e.toString());
+      return null;
+    }
+  }
 }

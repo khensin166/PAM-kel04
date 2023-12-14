@@ -14,8 +14,17 @@ class IzinKeluarController extends Controller
 
     public function index()
     {
+
+        $data_ik = IzinKeluar::with('mahasiswa')->where('status', 'pending')->latest()->get();
+        return response([
+            'data_ik' => $data_ik
+        ], 200);
+    }
+
+    public function dataIKMhs()
+    {
         $mahasiswa = Auth::guard('mahasiswa')->id();
-        $data_ik = IzinKeluar::with('mahasiswa')->latest()->get()->where('mahasiswa_id', $mahasiswa);
+        $data_ik = IzinKeluar::with('mahasiswa')->latest()->where('mahasiswa_id', $mahasiswa)->get();
         return response([
             'data_ik' => $data_ik
         ], 200);
@@ -50,7 +59,7 @@ class IzinKeluarController extends Controller
     public function statusUpdate(Request $request, $id)
     {
         $rules = [
-            'status' => 'required|string|in:approved,rejected',
+            'status' => 'required|string|in:approved,rejected,cancel',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -62,11 +71,6 @@ class IzinKeluarController extends Controller
 
         if (!$izinKeluar) {
             return response()->json(['message' => 'Izin Keluar not found'], 404);
-        }
-
-        // Check if the authenticated user has the right to update this record
-        if (Auth::guard('mahasiswa')->user()->id !== $izinKeluar->mahasiswa_id) {
-            return response()->json(['message' => 'Unauthorized'], 403);
         }
 
         $izinKeluar->update([

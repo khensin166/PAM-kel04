@@ -7,6 +7,7 @@ use App\Http\Requests\mLoginRequest;
 use App\Http\Requests\mRegisterRequest;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthenticationController extends Controller
@@ -38,7 +39,7 @@ class AuthenticationController extends Controller
         $request->validated();
 
         $mahasiswa = Mahasiswa::whereEmail($request->email)->first();
-        
+
         if (!$mahasiswa || !Hash::check($request->password, $mahasiswa->password)) {
             return response([
                 'message' => 'invalid credentials'
@@ -50,6 +51,15 @@ class AuthenticationController extends Controller
         return response([
             'mahasiswa' => $mahasiswa,
             'token' => $token,
+        ], 200);
+    }
+
+    public function dashboard()
+    {
+        $mahasiswa = Auth::guard('mahasiswa')->id();
+        $data_mahasiswa = Mahasiswa::latest()->where('mahasiswa_id', $mahasiswa)->get();
+        return response([
+            'data_mahasiswa' => $data_mahasiswa
         ], 200);
     }
 }
