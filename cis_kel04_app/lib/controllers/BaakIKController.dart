@@ -45,7 +45,7 @@ class BaakIKController extends GetxController {
   Future<void> updateStatus(int? id, String status) async {
     try {
       var response = await http.put(
-        Uri.parse('${url}baak/ik/$id/status-update'),
+        Uri.parse('${url}ik/$id/status-update'),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer ${box.read('token')}',

@@ -1,5 +1,6 @@
 import 'package:cis_kel04_app/controllers/MhsAuthenticationController.dart';
 import 'package:cis_kel04_app/models/mahasiswa.dart';
+import 'package:cis_kel04_app/views/mahasiswa/pages/izinBermalam.dart';
 import 'package:cis_kel04_app/views/mahasiswa/pages/izinKeluar.dart';
 import 'package:cis_kel04_app/views/mahasiswa/pages/ruangan.dart';
 import 'package:flutter/material.dart';
@@ -146,7 +147,9 @@ class _MhsDashboardState extends State<MhsDashboard> {
           card_widgets(
             hintCard: 'req izin bermalam',
             image: 'assets/ib.png',
-            onPressed: () {},
+            onPressed: () {
+              Get.to(() => const IzinBermalam());
+            },
             color: Color(0xffE9FFEB),
           ),
           card_widgets(

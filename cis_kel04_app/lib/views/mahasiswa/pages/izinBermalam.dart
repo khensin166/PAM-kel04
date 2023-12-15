@@ -1,18 +1,18 @@
-import 'package:cis_kel04_app/controllers/ik_Controller.dart';
-import 'package:cis_kel04_app/views/mahasiswa/pages/izinKeluarDetail.dart';
+import 'package:cis_kel04_app/views/mahasiswa/pages/izinBermalamDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../controllers/ib_Controller.dart';
 
-class IzinKeluar extends StatefulWidget {
-  const IzinKeluar({super.key});
+class IzinBermalam extends StatefulWidget {
+  const IzinBermalam({super.key});
 
   @override
-  State<IzinKeluar> createState() => _IzinKeluarState();
+  State<IzinBermalam> createState() => _IzinBermalamState();
 }
 
-class _IzinKeluarState extends State<IzinKeluar> {
-  final IKController _ikController = Get.put(IKController());
+class _IzinBermalamState extends State<IzinBermalam> {
+  final IBController _ibController = Get.put(IBController());
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class _IzinKeluarState extends State<IzinKeluar> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Request Izin Keluar"),
+        title: const Text("Request Izin Bermalam"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -32,7 +32,7 @@ class _IzinKeluarState extends State<IzinKeluar> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Histori Izin Keluar",
+                    "Histori Izin Bermalam",
                     style: GoogleFonts.poppins(
                         fontSize: 30, fontWeight: FontWeight.w700),
                   ),
@@ -41,7 +41,7 @@ class _IzinKeluarState extends State<IzinKeluar> {
                   ),
                   ElevatedButton(
                       onPressed: () {
-                        Get.to(() => const IzinKeluarDetail());
+                        Get.to(() => const IzinBermalamDetail());
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
@@ -51,12 +51,12 @@ class _IzinKeluarState extends State<IzinKeluar> {
                       ),
                       child: Container(
                         height: size.height / 15,
-                        width: size.width / 2.5,
+                        width: size.width / 3,
                         alignment: Alignment.center,
                         child: Row(
                           children: [
                             Text(
-                              "request Izin Keluar",
+                              "request IB",
                               style: GoogleFonts.inter(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -79,7 +79,7 @@ class _IzinKeluarState extends State<IzinKeluar> {
                   Center(
                     child: SingleChildScrollView(
                       child: Obx(() {
-                        return _ikController.isLoading.value
+                        return _ibController.isLoading.value
                             ? const Center(
                                 child: CircularProgressIndicator(),
                               )
@@ -100,19 +100,21 @@ class _IzinKeluarState extends State<IzinKeluar> {
                                     label: Text('Action', style: titles),
                                   ),
                                 ],
-                                rows: _ikController.data_ik.value
-                                    .map((izinKeluar) {
-                                  int rowNumber = _ikController.data_ik.value
-                                          .indexOf(izinKeluar) +
+                                rows: _ibController.data_ib.value
+                                    .map((izinBermalam) {
+                                  int rowNumber = _ibController.data_ib.value
+                                          .indexOf(izinBermalam) +
                                       1;
                                   Color cellColor;
-                                  if (izinKeluar.status == 'pending') {
+                                  if (izinBermalam.status == 'pending') {
                                     cellColor = Colors.yellow.shade100;
-                                  } else if (izinKeluar.status == 'approved') {
+                                  } else if (izinBermalam.status ==
+                                      'approved') {
                                     cellColor = Colors.green.shade50;
-                                  } else if (izinKeluar.status == 'rejected') {
+                                  } else if (izinBermalam.status ==
+                                      'rejected') {
                                     cellColor = Colors.red.shade50;
-                                  } else if (izinKeluar.status == 'cancel') {
+                                  } else if (izinBermalam.status == 'cancel') {
                                     // Default color if status is neither 'pending' nor 'accept'
                                     cellColor = Colors.grey;
                                   } else {
@@ -123,17 +125,19 @@ class _IzinKeluarState extends State<IzinKeluar> {
                                           MaterialStateProperty.all(cellColor),
                                       cells: [
                                         DataCell(Text(rowNumber.toString())),
+                                        DataCell(Text(
+                                            izinBermalam.keterangan ?? '')),
                                         DataCell(
-                                            Text(izinKeluar.keterangan ?? '')),
-                                        DataCell(Text(izinKeluar.status ?? '')),
+                                            Text(izinBermalam.status ?? '')),
                                         DataCell(TextButton(
-                                          onPressed: (izinKeluar.status ==
+                                          onPressed: (izinBermalam.status ==
                                                       'pending' ||
-                                                  izinKeluar.status ==
+                                                  izinBermalam.status ==
                                                       'approved')
                                               ? () {
-                                                  _ikController.updateStatus(
-                                                      izinKeluar.id, 'cancel');
+                                                  _ibController.updateStatus(
+                                                      izinBermalam.id,
+                                                      'cancel');
                                                 }
                                               : null,
                                           child: Text('cancel'),

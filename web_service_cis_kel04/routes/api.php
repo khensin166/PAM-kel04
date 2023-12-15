@@ -37,12 +37,11 @@ Route::prefix('baak')->group(function () {
     
     // ik baak
     Route::get('/ik', [IzinKeluarController::class, 'index'])->middleware(['auth:sanctum', 'abilities:mahasiswa']);
-    Route::put('/ik/{id}/status-update', [IzinKeluarController::class, 'statusUpdate']);
-
+    
     // crud ruangan baak
     Route::post('/ruangan', [RuanganController::class, 'store'])->middleware(['auth:sanctum', 'abilities:mahasiswa']);
     Route::delete('/ruangan/{id}/destroy', [RuanganController::class, 'destroy'])->middleware(['auth:sanctum', 'abilities:mahasiswa']);
-
+    
     // izin ruangan
 
 });
@@ -69,10 +68,11 @@ Route::prefix('mahasiswa')->group(function (){
     
     //request surat
     Route::post('/surat/store', [SuratController::class, 'store'])->middleware(['auth:sanctum', 'abilities:mahasiswa']);
-
+    
 });
 
 
+Route::put('/ik/{id}/status-update', [IzinKeluarController::class, 'statusUpdate']);
 Route::put('/ib/{id}/status-update', [IzinKeluarController::class, 'statusUpdate']);
 Route::put('/izinRuangan/{id}/status-update', [IzinRuanganController::class, 'statusUpdate']);
 Route::put('/surat/{id}/status-update', [SuratController::class, 'statusUpdate']);
